@@ -29,13 +29,21 @@ def usb_close(s):
 
 if __name__ == "__main__":
   s = usb_init()
-  try:
-    for i in range(3):
-      relay_set(s, 1, True)
-      time.sleep(3)
 
-      relay_set(s, 1, False)
-      # 给继电器保持断开状态的时间，避免下一轮立即又打开
-      time.sleep(0.5)
+  try:
+    while True:
+      cmd = input("请输入 '0' 打开继电器, '1' 关闭继电器 (输入 'q' 或 'exit' 退出): ")
+      if cmd == '0':
+        relay_set(s, 1, True)
+        
+        print("继电器吸起")
+      elif cmd == '1':
+        relay_set(s, 1, False)
+        print("继电器落下")
+      elif cmd.lower() in ['q', 'exit']:
+        print("程序退出。")
+        break
+      else:
+        print("无效输入，请重新输入。")
   finally:
     usb_close(s)
